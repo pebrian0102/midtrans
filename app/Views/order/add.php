@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
+                    <h1 class="m-0">Order</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -38,7 +38,7 @@
                                     <input type="number" class="form-control" placeholder="Nilai Barang" name="nilai" id="nilai">
                                 </div>
                                 <div class="form-group">
-                                    <label for="jml">Jumlah Barang</label>
+                                    <label for="number">Jumlah Barang</label>
                                     <input type="text" class="form-control" placeholder="Jumlah Barang" name="jml" id="jml">
                                 </div>
                                 <button type="submit" class="btn btn-success">Simpan</button>

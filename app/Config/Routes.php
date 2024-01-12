@@ -30,8 +30,11 @@ $routes->post('/master/user_role_update', 'Master::user_role_update');
 $routes->post('/home/bayar2', 'Home::bayar2');
 $routes->post('/home/token', 'Home::token');
 
+$routes->post('/midtrans/token', 'Midtrans::token');
+
 $routes->get('/order/index', 'Order::index');
 $routes->get('/order/index', 'Order::index');
 $routes->get('/order/add', 'Order::add');
 $routes->post('/order/store', 'Order::store');
 $routes->get('/order/pay/(:any)', 'Order::pay/$1');
+$routes->post('/order/finish', 'Order::finish');

@@ -7,62 +7,71 @@ use Midtrans\Config;
 
 class Midtrans extends BaseController
 {
-    public function token()
+    function __construct()
     {
         Config::$serverKey = 'SB-Mid-server-3xppdifbR3ZLUsxoVqyhE6s_';
         Config::$clientKey = 'SB-Mid-client-EzwfzLeQ7HTc85LB';
         Config::$isSanitized = true;
         Config::$is3ds = true;
+    }
+
+    public function token()
+    {
+        $order_id = $this->request->getVar('order_id');
+        $barang = $this->request->getVar('barang');
+        $nilai = intval($this->request->getVar('nilai'));
+        $jml = intval($this->request->getVar('jml'));
+        $total = intval($nilai * $jml);
+        $user = db()->table('order')
+            ->select('username,email')
+            ->join('users', 'users.id=order.user_id')
+            ->where('order_id', $order_id)->get()->getRow();
+
         // Required
         $transaction_details = array(
-            'order_id' => "bayar-15k",
-            'gross_amount' => 15000, // no decimal allowed for creditcard
+            'order_id' => $order_id,
+            'gross_amount' => $total, // no decimal allowed for creditcard
         );
         // Optional
         $item1_details = array(
             'id' => 'a1',
-            'price' => 5000,
-            'quantity' => 2,
-            'name' => "Apple"
-        );
-        $item2_details = array(
-            'id' => 'a2',
-            'price' => 5000,
-            'quantity' => 1,
-            'name' => "Banana"
+            'price' => $nilai,
+            'quantity' => $jml,
+            'name' => $barang
         );
         // Optional
-        $item_details = array($item1_details, $item2_details);
+        // $item_details = array($item1_details, $item2_details);
+        $item_details = array($item1_details);
         // Optional
         $billing_address = array(
-            'first_name'    => "Andri",
-            'last_name'     => "Litani",
-            'address'       => "Mangga 20",
+            'first_name'    => $user->username,
+            'last_name'     => "",
+            'address'       => "",
             'city'          => "Jakarta",
-            'postal_code'   => "16602",
-            'phone'         => "081122334455",
+            'postal_code'   => "",
+            'phone'         => "0088008800",
             'country_code'  => 'IDN'
         );
 
         // Optional
-        $shipping_address = array(
-            'first_name'    => "Obet",
-            'last_name'     => "Supriadi",
-            'address'       => "Manggis 90",
-            'city'          => "Jakarta",
-            'postal_code'   => "16601",
-            'phone'         => "08113366345",
-            'country_code'  => 'IDN'
-        );
+        // $shipping_address = array(
+        //     'first_name'    => "Obet",
+        //     'last_name'     => "Supriadi",
+        //     'address'       => "Manggis 90",
+        //     'city'          => "Jakarta",
+        //     'postal_code'   => "16601",
+        //     'phone'         => "08113366345",
+        //     'country_code'  => 'IDN'
+        // );
 
         // Optional
         $customer_details = array(
-            'first_name'    => "Andri",
-            'last_name'     => "Litani",
-            'email'         => "andri@litani.com",
-            'phone'         => "081122334455",
+            'first_name'    => $user->username,
+            'last_name'     => "",
+            'email'         => $user->email,
+            'phone'         => "0800800800",
             'billing_address'  => $billing_address,
-            'shipping_address' => $shipping_address
+            // 'shipping_address' => $shipping_address
         );
         // Optional, remove this to display all available payment methods
         $enable_payments = array('credit_card', 'cimb_clicks', 'mandiri_clickpay', 'echannel');
@@ -79,11 +88,12 @@ class Midtrans extends BaseController
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
-
         echo $snap_token;
     }
-    public function bayar2()
+    public function get_status()
     {
-        return redirect()->to('/');
+        $order_id = $this->request->getVar('order_id');
+        $status = \Midtrans\Transaction::status($order_id);
+        return $status;
     }
 }
