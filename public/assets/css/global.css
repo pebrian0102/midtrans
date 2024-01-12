@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-poppins);
+}
+body {
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    #f1fdfe,
+    #effdfd 6.25%,
+    #edfdfc 12.5%,
+    #ecfdfa 18.75%,
+    #eafdf9 25%,
+    #e8fef8 31.25%,
+    #e6fef7 37.5%,
+    #e4fef6 43.75%,
+    #e2fef4 50%,
+    #e1fef3 56.25%,
+    #dffef2 62.5%,
+    #ddfef1 68.75%,
+    #dbfef0 75%,
+    #d9ffef 81.25%,
+    #d8ffed 87.5%,
+    #d6ffec 93.75%,
+    #d4ffeb
+  );
+  padding: 2% 7%;
+  overflow-x: hidden;
+}
+
+:root {
+  /* fonts */
+  --font-poppins: Poppins;
+  --font-bebas-neue: "Bebas Neue";
+  --font-inter: Inter;
+
+  /* font sizes */
+  --font-size-8px: 8px;
+  --font-size-40px: 40px;
+  --font-size-11px: 11px;
+  --font-size-10px: 10px;
+  --font-size-sm: 14px;
+  --font-size-24px: 24px;
+
+  /* Colors */
+  --color-black: #000;
+  --color-white: #fff;
+  --color-darkturquoise-100: rgba(77, 209, 222, 0.2);
+  --color-darkturquoise-200: rgba(77, 209, 222, 0.47);
+  --color-gray: rgba(255, 255, 255, 0.48);
+  --color-paleturquoise: #bceed7;
+
+  /* Border radiuses */
+  --br-xl: 20px;
+  --br-3xs: 10px;
+}
+.glass {
+  background-color: rgba(255, 255, 255, 0.48);
+  backdrop-filter: blur(5px);
+  border: 1px solid #fff;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 20px;
+  border-radius: 20px;
+}
