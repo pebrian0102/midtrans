@@ -44,6 +44,7 @@
                                 <!-- Don't Delete this element -->
                                 <input type="hidden" name="type" id="result-type" value="">
                                 <input type="hidden" name="data" id="result-data" value="">
+                                <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
                                 <button type="button" class="btn btn-success" id="pay-button">Bayar</button>
                             </form>
                         </div><!-- /.card-body -->
@@ -62,50 +63,75 @@
     $('#pay-button').click(function(e) {
         e.preventDefault();
         $(this).attr("disabled", "disabled");
+
         $.ajax({
-            url: '<?= base_url('midtrans/token') ?>',
+            url: '<?= base_url('midtrans/get_status') ?>',
             type: "POST",
             data: {
                 order_id: '<?= $order['order_id'] ?>',
-                barang: '<?= $order['barang'] ?>',
-                nilai: <?= $order['nilai'] ?>,
-                jml: <?= $order['jml'] ?>
             },
             cache: false,
 
             success: function(data) {
+                data = JSON.parse(data)
                 $('#pay-button').removeAttr('disabled');
-
-                var resultType = document.getElementById('result-type');
-                var resultData = document.getElementById('result-data');
-
-                function changeResult(type, data) {
-                    $("#result-type").val(type);
-                    $("#result-data").val(JSON.stringify(data));
-                }
-
-                snap.pay(data, {
-                    onSuccess: function(result) {
-                        changeResult('success', result);
-                        console.log(result.status_message);
-                        console.log(result);
-                        $("#payment-form").submit();
-
-                    },
-                    onPending: function(result) {
-                        changeResult('pending', result);
-                        console.log(result.status_message);
-                        $("#payment-form").submit();
-
-                    },
-                    onError: function(result) {
-                        changeResult('error', result);
-                        console.log(result.status_message);
-                        $("#payment-form").submit();
+                if (data.status_code) {
+                    if (data.status_code == 200) {
+                        alert('Sudah Dibayar!')
+                    } else if (data.status_code == 400 || data.status_code == 201) {
+                        alert('Tidak Ditemukan!')
+                    } else {
+                        alert('Tidak Ditemukan')
                     }
-                });
+                } else {
+                    $.ajax({
+                        url: '<?= base_url('midtrans/token') ?>',
+                        type: "POST",
+                        data: {
+                            order_id: '<?= $order['order_id'] ?>',
+                            barang: '<?= $order['barang'] ?>',
+                            nilai: <?= $order['nilai'] ?>,
+                            jml: <?= $order['jml'] ?>
+                        },
+                        cache: false,
+
+                        success: function(data) {
+
+                            var resultType = document.getElementById('result-type');
+                            var resultData = document.getElementById('result-data');
+
+                            function changeResult(type, data) {
+                                $("#result-type").val(type);
+                                $("#result-data").val(JSON.stringify(data));
+                            }
+
+                            snap.pay(data, {
+                                onSuccess: function(result) {
+                                    changeResult('success', result);
+                                    console.log(result.status_message);
+                                    console.log(result);
+                                    $("#payment-form").submit();
+
+                                },
+                                onPending: function(result) {
+                                    changeResult('pending', result);
+                                    console.log(result.status_message);
+                                    $("#payment-form").submit();
+
+                                },
+                                onError: function(result) {
+                                    changeResult('error', result);
+                                    console.log(result.status_message);
+                                    $("#payment-form").submit();
+                                }
+                            });
+                        }
+                    });
+                }
             }
-        });
+        })
+
+
     })
 </script>
 <?= $this->endSection('content') ?>

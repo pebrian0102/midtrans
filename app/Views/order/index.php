@@ -36,6 +36,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Order ID</th>
+                                        <th>Nilai</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -46,6 +47,7 @@
                                         <tr>
                                             <td><?= $i++ ?></td>
                                             <td><?= $r['order_id'] ?></td>
+                                            <td><?= $r['nilai'] ?></td>
                                             <td><?= $r['sts'] ?></td>
                                             <td><a href="<?= base_url() ?>/order/pay/<?= $r['order_id'] ?>" class="badge bg-success">Pay</a></td>
                                         </tr>

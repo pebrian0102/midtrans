@@ -31,6 +31,7 @@ $routes->post('/home/bayar2', 'Home::bayar2');
 $routes->post('/home/token', 'Home::token');
 
 $routes->post('/midtrans/token', 'Midtrans::token');
+$routes->post('/midtrans/get_status', 'Midtrans::get_status');
 
 $routes->get('/order/index', 'Order::index');
 $routes->get('/order/index', 'Order::index');

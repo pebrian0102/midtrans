@@ -93,7 +93,11 @@ class Midtrans extends BaseController
     public function get_status()
     {
         $order_id = $this->request->getVar('order_id');
-        $status = \Midtrans\Transaction::status($order_id);
-        return $status;
+        try {
+            $status = \Midtrans\Transaction::status($order_id);
+            return json_encode($status);
+        } catch (\Exception $e) {
+            return json_encode($e->getMessage());
+        }
     }
 }

@@ -10,6 +10,10 @@ class Order extends BaseController
     function __construct()
     {
         $this->mOrder = model('Order');
+        Config::$serverKey = 'SB-Mid-server-3xppdifbR3ZLUsxoVqyhE6s_';
+        Config::$clientKey = 'SB-Mid-client-EzwfzLeQ7HTc85LB';
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
     }
 
     public function index(): string
@@ -26,12 +30,15 @@ class Order extends BaseController
     public function store()
     {
         $order_id = user()->id . time();
+        $barang = $this->request->getVar('barang');
+        $nilai = intval($this->request->getVar('nilai'));
+        $jml = intval($this->request->getVar('jml'));
         $data = [
             'order_id' => $order_id,
             'user_id' => user()->id,
-            'barang' => $this->request->getVar('barang'),
-            'nilai' => $this->request->getVar('nilai'),
-            'jml' => $this->request->getVar('jml'),
+            'barang' => $barang,
+            'nilai' => $nilai,
+            'jml' => $jml,
             'inputby' => $this->time . ";" . user()->username,
         ];
         $this->mOrder->insert($data);
@@ -64,7 +71,7 @@ class Order extends BaseController
             } else {
                 $sts = 0;
             }
-            db()->table('order')->where('order_id', $order_id)->update(['sts', $sts]);
+            db()->table('order')->where('order_id', $order_id)->update(['sts' =>  $sts]);
         }
         session()->setFlashdata('success', 'Data Berhasil diupdate');
         return redirect()->to('/order/index');
